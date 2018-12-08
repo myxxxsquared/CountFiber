@@ -12,7 +12,7 @@ file(GLOB COUNT_SRC
     "*.cpp"
 )
 
-list(REMOVE_ITEM COUNT_SRC FiberInfo.cpp)
+list(REMOVE_ITEM COUNT_SRC FiberInfo.cpp FiberInfo.h)
 
 include(${ROOT_USE_FILE})
 include_directories( ${OpenCV_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS} )
@@ -22,7 +22,7 @@ ROOT_GENERATE_DICTIONARY(
     LINKDEF FiberLinkDef.h
 )
 
-add_library(FiberInfo SHARED G__FiberInfo.cxx FiberInfo.cpp)
+add_library(FiberInfo SHARED G__FiberInfo.cxx FiberInfo.cpp FiberInfo.h)
 add_executable( Count ${COUNT_SRC})
 target_link_libraries( Count ${OpenCV_LIBS} ${ROOT_LIBRARIES} FiberInfo)
 
