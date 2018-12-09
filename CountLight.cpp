@@ -47,8 +47,14 @@ int main()
 
     cv::Mat nearestmat;
     std::vector<FiberInfo> infos;
+
+    // 寻找最近点
     GenNearestMat(nearestmat, avgimage, maxpoints, width, height);
+
+    // 临近搜索获取光纤信息
     GetFiberInfo(nearestmat, maxpoints, grayimg, infos, width, height);
+
+    // 将光线信息保存到root文件
     SaveToTTree(infos);
 
     return 0;
