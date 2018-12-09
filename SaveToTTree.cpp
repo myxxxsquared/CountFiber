@@ -4,7 +4,7 @@
 #include <TFile.h>
 #include <TTree.h>
 
-void SaveToTTree(std::vector<FiberInfo> &infos)
+void SaveToTTree(const std::vector<FiberInfo> &infos)
 {
     FiberInfo *info = new FiberInfo();
 

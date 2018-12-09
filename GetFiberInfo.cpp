@@ -3,12 +3,17 @@
 #include "FiberInfo.h"
 
 #include <queue>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
 
-void GetFiberInfo(cv::Mat &nearestmat, std::vector<cv::Point2i> &maxpoints, cv::Mat &grayimg, std::vector<FiberInfo> &infos, int width, int height)
+void GetFiberInfo(cv::Mat &nearestmat, const std::vector<cv::Point2i> &maxpoints, const cv::Mat &grayimg, std::vector<FiberInfo> &infos, int width, int height)
 {
+    infos.resize(maxpoints.size());
+
+    #pragma omp parallel for
     for(int i = 0; i < maxpoints.size(); ++i)
     {
-        cv::Point2i &pt = maxpoints[i];
+        const cv::Point2i &pt = maxpoints[i];
         std::queue<cv::Point2i> search_queue;
         search_queue.push(pt);
 
@@ -27,7 +32,7 @@ void GetFiberInfo(cv::Mat &nearestmat, std::vector<cv::Point2i> &maxpoints, cv::
             if(curptval != i)
                 continue;
 
-            curptval = -1;
+            curptval += maxpoints.size();
             ++info.num_pixel;
             info.avg_x += curpt.x;
             info.avg_y += curpt.y;
@@ -51,6 +56,34 @@ void GetFiberInfo(cv::Mat &nearestmat, std::vector<cv::Point2i> &maxpoints, cv::
             info.avg_clr /= info.num_pixel;
         }
 
-        infos.push_back(info);
+        infos[i] = info;
     }
+
+    cv::Vec3b colors[] = {
+        cv::Vec3b(0, 255, 255),
+        cv::Vec3b(255, 0, 0),
+        cv::Vec3b(0, 255, 0),
+        cv::Vec3b(0, 0, 255),
+        cv::Vec3b(255, 255, 0),
+        cv::Vec3b(255, 0, 255),
+        cv::Vec3b(0, 0, 0)
+    };
+
+    cv::Mat fiber_show;
+    fiber_show.create(height, width, CV_8UC3);
+    #pragma omp parallel for
+    for(int i = 0; i < height; ++i)
+    {
+        for(int j = 0; j < width; ++j)
+        {
+            int idx = nearestmat.at<int>(i, j);
+            if(idx <= (int)maxpoints.size())
+                fiber_show.at<cv::Vec3b>(i, j) = colors[6];
+            else
+                fiber_show.at<cv::Vec3b>(i, j) = colors[(nearestmat.at<int>(i, j)-maxpoints.size()) % 6];
+        }
+    }
+    for(int i = 0; i < (int)maxpoints.size(); ++i)
+        cv::circle(fiber_show, maxpoints[i], 3, cv::Scalar(255, 255, 255), -1);
+    cv::imwrite("fiber_show.jpg", fiber_show);
 }

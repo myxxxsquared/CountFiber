@@ -5,15 +5,15 @@
 #include "Count.h"
 #include "FiberInfo.h"
 
-void CvtColor(cv::Mat &img, cv::Mat &grayimg);
-void AvgColor(cv::Mat &grayimg, cv::Mat &avgimage, int width, int height);
+void CvtColor(const cv::Mat &img, cv::Mat &grayimg);
+void AvgColor(const cv::Mat &grayimg, cv::Mat &avgimage, int width, int height);
 void GenKernel(cv::Mat &kernel);
-void Conv(cv::Mat &avgimage, cv::Mat &filteredimg, cv::Mat &kernel);
-void NMI(cv::Mat &filteredimg, std::vector<cv::Point2i> &maxpoints, int width, int height);
-void ShowResult(std::vector<cv::Point2i> &maxpoints, cv::Mat &img);
-void GenNearestMat(cv::Mat &nearestmat, cv::Mat &avgimage, std::vector<cv::Point2i> &maxpoints, int width, int height);
-void GetFiberInfo(cv::Mat &nearestmat, std::vector<cv::Point2i> &maxpoints, cv::Mat &grayimg, std::vector<FiberInfo> &infos, int width, int height);
-void SaveToTTree(std::vector<FiberInfo> &infos);
+void Conv(const cv::Mat &avgimage, cv::Mat &filteredimg, const cv::Mat &kernel);
+void NMI(const cv::Mat &filteredimg, std::vector<cv::Point2i> &maxpoints, int width, int height);
+void ShowResult(const std::vector<cv::Point2i> &maxpoints, const cv::Mat &img);
+void GenNearestMat(cv::Mat &nearestmat, const cv::Mat &avgimage, const std::vector<cv::Point2i> &maxpoints, int width, int height);
+void GetFiberInfo(cv::Mat &nearestmat, const std::vector<cv::Point2i> &maxpoints, const cv::Mat &grayimg, std::vector<FiberInfo> &infos, int width, int height);
+void SaveToTTree(const std::vector<FiberInfo> &infos);
 
 int main()
 {

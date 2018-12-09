@@ -3,7 +3,7 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 
-void ShowResult(std::vector<cv::Point2i> &maxpoints, cv::Mat &img)
+void ShowResult(const std::vector<cv::Point2i> &maxpoints, const cv::Mat &img)
 {
     cv::Mat img_final = img.clone();
     for(int i = 0; i < (int)maxpoints.size(); ++i)

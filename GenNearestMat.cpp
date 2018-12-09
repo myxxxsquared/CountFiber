@@ -4,9 +4,9 @@
 #include <opencv2/flann.hpp>
 #include <opencv2/imgproc.hpp>
 
-void GenNearestMat(cv::Mat &nearestmat, cv::Mat &avgimage, std::vector<cv::Point2i> &maxpoints, int width, int height)
+void GenNearestMat(cv::Mat &nearestmat, const cv::Mat &avgimage, const std::vector<cv::Point2i> &maxpoints, int width, int height)
 {
-    float th = 100;
+    float th = 0.4;
 
     nearestmat.create(height, width, CV_32SC1);
 
@@ -17,6 +17,7 @@ void GenNearestMat(cv::Mat &nearestmat, cv::Mat &avgimage, std::vector<cv::Point
     }
     cv::flann::Index flann_index(features, cv::flann::KDTreeIndexParams(1));
 
+    #pragma omp parallel for
     for(int i = 0; i < height; ++i)
     {
         for(int j = 0; j < width; ++j)
@@ -46,6 +47,7 @@ void GenNearestMat(cv::Mat &nearestmat, cv::Mat &avgimage, std::vector<cv::Point
 
     cv::Mat mindist_show;
     mindist_show.create(height, width, CV_8UC3);
+    #pragma omp parallel for
     for(int i = 0; i < height; ++i)
     {
         for(int j = 0; j < width; ++j)

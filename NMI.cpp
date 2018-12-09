@@ -1,11 +1,11 @@
 #include "Count.h"
 
 
-void NMI(cv::Mat &filteredimg, std::vector<cv::Point2i> &maxpoints, int width, int height)
+void NMI(const cv::Mat &filteredimg, std::vector<cv::Point2i> &maxpoints, int width, int height)
 {
     int areawidth = 17;
     int halfareawidth = (areawidth-1)/2;
-    float th = 90;
+    float th = 30;
 
     for(int i = 0; i < height; i += areawidth)
     {

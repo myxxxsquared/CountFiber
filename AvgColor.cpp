@@ -1,7 +1,7 @@
 
 #include "Count.h"
 
-void AvgColor(cv::Mat &grayimg, cv::Mat &avgimage, int width, int height)
+void AvgColor(const cv::Mat &grayimg, cv::Mat &avgimage, int width, int height)
 {
     int avgrange = 30;
     int calcrange = 30;

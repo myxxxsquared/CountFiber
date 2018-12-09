@@ -7,6 +7,12 @@ list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 find_package( OpenCV REQUIRED core imgproc highgui flann imgcodecs)
 find_package( ROOT REQUIRED )
 
+find_package(OpenMP)
+if (OPENMP_FOUND)
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+endif()
+
 file(GLOB COUNT_SRC
     "*.h"
     "*.cpp"
